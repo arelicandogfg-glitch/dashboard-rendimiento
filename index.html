@@ -206,7 +206,7 @@ function renderChart() {
       const data = allDates.map(d => { const rows = DB.filter(r => r.fecha === d && r.productor === prod && r.item === it); return rows.length ? rows.reduce((s, r) => s + r.cajas, 0) : null; });
       const color = getColor(iC, it, i);
       leg.innerHTML += `<span class="legend-item"><span class="legend-line" style="background:${color}"></span>${it}</span>`;
-      return { label: it, data, borderColor: color, backgroundColor: color + '18', borderWidth: 2, borderDash: dashes[i % 5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: false };
+      return { label: it, data, borderColor: color, backgroundColor: color + '18', borderWidth: 2, borderDash: dashes[i % 5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: true };
     });
   } else {
     const item = allItems[sel];
