@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curva de Producción 2026 — GoodFarms Genetics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #eeecea;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.15);
+    --text: #1a1a18;
+    --text2: #6b6b68;
+    --text3: #9e9e9a;
+    --green: #2d6a4f;
+    --green-light: #d8f3e3;
+    --accent: #c9441a;
+    --c1: #2563a8;
+    --c2: #197a58;
+    --c3: #c9441a;
+    --c4: #9a6200;
+    --c5: #a83268;
+    --p1: #6350c4;
+    --p2: #197a58;
+    --p3: #2563a8;
+    --p4: #c9441a;
+    --p5: #a83268;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 16px; }
+
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--green);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-mark svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2; }
+
+  .header-title { font-size: 15px; font-weight: 500; color: var(--text); }
+  .header-sub { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 2px; }
+
+  .badge {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    background: var(--green-light);
+    color: var(--green);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(45,106,79,0.2);
+  }
+
+  main { padding: 32px 40px; max-width: 1100px; margin: 0 auto; }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .metric-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .metric-value { font-size: 26px; font-weight: 300; color: var(--text); line-height: 1; }
+  .metric-value.sm { font-size: 16px; font-weight: 500; margin-top: 2px; }
+  .metric-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  .chart-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .mode-toggle {
+    display: flex;
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .mode-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text2);
+    transition: all 0.15s;
+  }
+  .mode-btn.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 5px 12px;
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text2);
+    transition: all 0.15s;
+  }
+  .tab:hover { background: var(--surface2); }
+  .tab.active {
+    color: var(--surface);
+    border-color: transparent;
+  }
+
+  .chart-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .chart-subtitle { font-size: 13px; color: var(--text2); }
+  .chart-subtitle strong { color: var(--text); font-weight: 500; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .legend-line {
+    width: 20px; height: 2px;
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  .chart-wrap { position: relative; width: 100%; height: 300px; }
+
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .sum-card {
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: var(--surface2);
+    border-left: 3px solid #ccc;
+  }
+  .sum-name { font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 6px; font-family: 'DM Mono', monospace; }
+  .sum-stat { font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .sum-stat strong { color: var(--text); font-weight: 500; }
+
+  footer {
+    text-align: center;
+    padding: 24px 40px;
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20"><path d="M10 3 C6 3 3 6 3 10 C3 14 6 17 10 17 C14 17 17 14 17 10" stroke-linecap="round"/><circle cx="10" cy="10" r="2.5" fill="white" stroke="none"/></svg>
+    </div>
+    <div>
+      <div class="header-title">GoodFarms Genetics — Raspberry Breeding Program</div>
+      <div class="header-sub">Curva de producción · Trialing Package 2026</div>
+    </div>
+  </div>
+  <span class="badge">Datos de ejemplo · Temporada 2026</span>
+</header>
+
+<main>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="chart-section">
+    <div class="controls">
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="btn-prod" onclick="setMode('prod')">Por productor</button>
+        <button class="mode-btn" id="btn-item" onclick="setMode('item')">Por item</button>
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="chart-meta">
+      <div class="chart-subtitle" id="subtitle"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="chart" role="img" aria-label="Curva de producción diaria de frambuesa 2026"></canvas>
+    </div>
+
+    <div class="summary-cards" id="cards"></div>
+  </div>
+
+</main>
+
+<footer>GoodFarms Genetics · Jocotepec, Jalisco · Generado con datos del Historial de Rendimiento 2026</footer>
+
+<script>
+const DB = [
+  {f:'2026-04-01',p:'Gustavo Ortíz',        i:'GFRB2-180',c:8},
+  {f:'2026-04-03',p:'Gustavo Ortíz',        i:'GFRB5-187',c:6},
+  {f:'2026-04-05',p:'Gustavo Ortíz',        i:'GFRB2-180',c:14},
+  {f:'2026-04-05',p:'Gustavo Ortíz',        i:'GRRB3-184',c:5},
+  {f:'2026-04-03',p:'Aureliano Cardenas',   i:'GFRB2-180',c:6},
+  {f:'2026-04-08',p:'Gustavo Ortíz',        i:'GFRB4-237',c:10},
+  {f:'2026-04-08',p:'Aureliano Cardenas',   i:'GFRB4-237',c:12},
+  {f:'2026-04-08',p:'Daniel Rivera',        i:'GFRB2-180',c:9},
+  {f:'2026-04-10',p:'Gustavo Ortíz',        i:'GFRB2-180',c:28},
+  {f:'2026-04-10',p:'Gustavo Ortíz',        i:'GFRB6-210',c:15},
+  {f:'2026-04-10',p:'Daniel Rivera',        i:'GFRB5-187',c:12},
+  {f:'2026-04-10',p:'Alberto Páez',         i:'GFRB6-210',c:14},
+  {f:'2026-04-12',p:'Gustavo Ortíz',        i:'GRRB3-184',c:18},
+  {f:'2026-04-12',p:'Gustavo Ortíz',        i:'GFRB5-187',c:24},
+  {f:'2026-04-12',p:'Aureliano Cardenas',   i:'GFRB2-180',c:22},
+  {f:'2026-04-12',p:'Aureliano Cardenas',   i:'GFRB6-210',c:16},
+  {f:'2026-04-12',p:'Daniel Rivera',        i:'GFRB4-237',c:18},
+  {f:'2026-04-14',p:'Alberto Páez',         i:'GFRB4-237',c:20},
+  {f:'2026-04-15',p:'Gustavo Ortíz',        i:'GFRB2-180',c:42},
+  {f:'2026-04-15',p:'Aureliano Cardenas',   i:'GFRB5-187',c:20},
+  {f:'2026-04-15',p:'Alberto Páez',         i:'GFRB2-180',c:30},
+  {f:'2026-04-16',p:'Gustavo Ortíz',        i:'GFRB4-237',c:38},
+  {f:'2026-04-18',p:'Aureliano Cardenas',   i:'GFRB4-237',c:30},
+  {f:'2026-04-18',p:'Daniel Rivera',        i:'GFRB2-180',c:26},
+  {f:'2026-04-20',p:'Gustavo Ortíz',        i:'GFRB2-180',c:55},
+  {f:'2026-04-20',p:'Gustavo Ortíz',        i:'GRRB3-184',c:32},
+  {f:'2026-04-20',p:'Gustavo Ortíz',        i:'GFRB6-210',c:40},
+  {f:'2026-04-20',p:'Daniel Rivera',        i:'GFRB5-187',c:44},
+  {f:'2026-04-20',p:'Alberto Páez',         i:'GFRB6-210',c:48},
+  {f:'2026-04-22',p:'Gustavo Ortíz',        i:'GFRB5-187',c:38},
+  {f:'2026-04-22',p:'Aureliano Cardenas',   i:'GFRB2-180',c:38},
+  {f:'2026-04-22',p:'Aureliano Cardenas',   i:'GFRB6-210',c:44},
+  {f:'2026-04-22',p:'Daniel Rivera',        i:'GFRB4-237',c:35},
+  {f:'2026-04-24',p:'Gustavo Ortíz',        i:'GFRB4-237',c:62},
+  {f:'2026-04-24',p:'Alberto Páez',         i:'GFRB4-237',c:38},
+  {f:'2026-04-25',p:'Gustavo Ortíz',        i:'GFRB2-180',c:48},
+  {f:'2026-04-25',p:'Aureliano Cardenas',   i:'GFRB5-187',c:35},
+  {f:'2026-04-25',p:'Alberto Páez',         i:'GFRB2-180',c:42},
+  {f:'2026-04-28',p:'Gustavo Ortíz',        i:'GRRB3-184',c:25},
+  {f:'2026-04-28',p:'Aureliano Cardenas',   i:'GFRB4-237',c:45},
+  {f:'2026-04-28',p:'Daniel Rivera',        i:'GFRB2-180',c:20},
+  {f:'2026-04-30',p:'Gustavo Ortíz',        i:'GFRB2-180',c:35},
+  {f:'2026-04-30',p:'Gustavo Ortíz',        i:'GFRB6-210',c:52},
+  {f:'2026-04-30',p:'Daniel Rivera',        i:'GFRB5-187',c:30},
+  {f:'2026-04-30',p:'Alberto Páez',         i:'GFRB6-210',c:55},
+  {f:'2026-05-01',p:'Gustavo Ortíz',        i:'GFRB5-187',c:29},
+  {f:'2026-05-02',p:'Gustavo Ortíz',        i:'GFRB4-237',c:44},
+  {f:'2026-05-02',p:'Aureliano Cardenas',   i:'GFRB2-180',c:28},
+  {f:'2026-05-02',p:'Aureliano Cardenas',   i:'GFRB6-210',c:32},
+  {f:'2026-05-02',p:'Daniel Rivera',        i:'GFRB4-237',c:24},
+  {f:'2026-05-04',p:'Alberto Páez',         i:'GFRB4-237',c:26},
+  {f:'2026-05-05',p:'Gustavo Ortíz',        i:'GFRB2-180',c:20},
+  {f:'2026-05-05',p:'Aureliano Cardenas',   i:'GFRB5-187',c:18},
+  {f:'2026-05-05',p:'Alberto Páez',         i:'GFRB2-180',c:18},
+  {f:'2026-05-06',p:'Gustavo Ortíz',        i:'GRRB3-184',c:12},
+  {f:'2026-05-07',p:'Aureliano Cardenas',   i:'GFRB4-237',c:22},
+  {f:'2026-05-08',p:'Gustavo Ortíz',        i:'GFRB6-210',c:30},
+  {f:'2026-05-08',p:'Alberto Páez',         i:'GFRB6-210',c:22},
+  {f:'2026-05-10',p:'Gustavo Ortíz',        i:'GFRB4-237',c:18},
+  {f:'2026-05-15',p:'Gustavo Ortíz',        i:'GFRB2-180',c:22},
+  {f:'2026-05-15',p:'Gustavo Ortíz',        i:'GRRB3-184',c:10},
+  {f:'2026-05-15',p:'Gustavo Ortíz',        i:'GFRB5-187',c:22},
+  {f:'2026-05-15',p:'Juan Carlos Calleros', i:'GFRB4-237',c:23},
+  {f:'2026-05-15',p:'Aureliano Cardenas',   i:'GFRB5-187',c:10},
+  {f:'2026-05-16',p:'Gustavo Ortíz',        i:'GFRB2-180',c:25},
+  {f:'2026-05-16',p:'Gustavo Ortíz',        i:'GRRB3-184',c:15},
+  {f:'2026-05-16',p:'Gustavo Ortíz',        i:'GFRB5-187',c:25},
+  {f:'2026-05-16',p:'Juan Carlos Calleros', i:'GFRB4-237',c:27},
+  {f:'2026-05-16',p:'Aureliano Cardenas',   i:'GFRB5-187',c:12},
+];
+
+const iC = {'GFRB2-180':'#2563a8','GRRB3-184':'#197a58','GFRB4-237':'#c9441a','GFRB5-187':'#9a6200','GFRB6-210':'#a83268'};
+const pC = {'Gustavo Ortíz':'#6350c4','Aureliano Cardenas':'#197a58','Juan Carlos Calleros':'#2563a8','Daniel Rivera':'#c9441a','Alberto Páez':'#a83268'};
+const dashes = {0:[],1:[6,3],2:[3,3],3:[8,3,2,3],4:[4,2]};
+
+const allDates = [...new Set(DB.map(r=>r.f))].sort();
+const allProds = [...new Set(DB.map(r=>r.p))].sort();
+const allItems = [...new Set(DB.map(r=>r.i))].sort();
+
+function fmt(d){ const [,m,day]=d.split('-'); return `${parseInt(day)}/${parseInt(m)}`; }
+
+function buildMetrics(){
+  const total = DB.reduce((s,r)=>s+r.c,0);
+  const byItem={}, byProd={};
+  DB.forEach(r=>{ byItem[r.i]=(byItem[r.i]||0)+r.c; byProd[r.p]=(byProd[r.p]||0)+r.c; });
+  const bestItem = Object.entries(byItem).sort((a,b)=>b[1]-a[1])[0];
+  const bestProd = Object.entries(byProd).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">Total cajas</div><div class="metric-value">${total.toLocaleString()}</div><div class="metric-sub">temporada 2026</div></div>
+    <div class="metric"><div class="metric-label">Item líder</div><div class="metric-value sm">${bestItem[0]}</div><div class="metric-sub">${bestItem[1]} cajas acumuladas</div></div>
+    <div class="metric"><div class="metric-label">Productor líder</div><div class="metric-value sm">${bestProd[0].split(' ')[0]}</div><div class="metric-sub">${bestProd[1]} cajas acumuladas</div></div>
+    <div class="metric"><div class="metric-label">Días registrados</div><div class="metric-value">${allDates.length}</div><div class="metric-sub">abr–may 2026</div></div>
+    <div class="metric"><div class="metric-label">Productores</div><div class="metric-value">${allProds.length}</div><div class="metric-sub">en evaluación</div></div>
+    <div class="metric"><div class="metric-label">Items</div><div class="metric-value">${allItems.length}</div><div class="metric-sub">variedades evaluadas</div></div>
+  `;
+}
+
+let mode='prod', sel=0, chart;
+
+function setMode(m){
+  mode=m; sel=0;
+  document.getElementById('btn-prod').classList.toggle('active', m==='prod');
+  document.getElementById('btn-item').classList.toggle('active', m==='item');
+  renderTabs(); renderChart();
+}
+
+function renderTabs(){
+  const el=document.getElementById('tabs');
+  el.innerHTML='';
+  const list=mode==='prod'?allProds:allItems;
+  const cols=mode==='prod'?pC:iC;
+  list.forEach((name,i)=>{
+    const btn=document.createElement('button');
+    btn.className='tab'+(i===sel?' active':'');
+    btn.textContent=mode==='prod'?name.split(' ')[0]:name;
+    if(i===sel) btn.style.background=cols[name];
+    btn.onclick=()=>{ sel=i; renderTabs(); renderChart(); };
+    el.appendChild(btn);
+  });
+}
+
+function renderChart(){
+  const leg=document.getElementById('legend');
+  leg.innerHTML='';
+  let datasets=[];
+
+  if(mode==='prod'){
+    const prod=allProds[sel];
+    document.getElementById('subtitle').innerHTML=`Items de <strong>${prod}</strong> — cajas por día`;
+    const its=[...new Set(DB.filter(r=>r.p===prod).map(r=>r.i))].sort();
+    datasets=its.map((it,i)=>{
+      const data=allDates.map(d=>{ const rows=DB.filter(r=>r.f===d&&r.p===prod&&r.i===it); return rows.length?rows.reduce((s,r)=>s+r.c,0):null; });
+      leg.innerHTML+=`<span class="legend-item"><span class="legend-line" style="background:${iC[it]}"></span>${it}</span>`;
+      return {label:it,data,borderColor:iC[it],backgroundColor:iC[it]+'18',borderWidth:2,borderDash:dashes[i%5],pointRadius:4,pointHoverRadius:7,tension:0.35,fill:false,spanGaps:false};
+    });
+  } else {
+    const item=allItems[sel];
+    document.getElementById('subtitle').innerHTML=`Productores para <strong>${item}</strong> — cajas por día`;
+    const ps=[...new Set(DB.filter(r=>r.i===item).map(r=>r.p))].sort();
+    datasets=ps.map((p,i)=>{
+      const data=allDates.map(d=>{ const rows=DB.filter(r=>r.f===d&&r.p===p&&r.i===item); return rows.length?rows.reduce((s,r)=>s+r.c,0):null; });
+      leg.innerHTML+=`<span class="legend-item"><span class="legend-line" style="background:${pC[p]}"></span>${p.split(' ')[0]}</span>`;
+      return {label:p.split(' ')[0],data,borderColor:pC[p],backgroundColor:pC[p]+'18',borderWidth:2,borderDash:dashes[i%5],pointRadius:4,pointHoverRadius:7,tension:0.35,fill:false,spanGaps:false};
+    });
+  }
+
+  if(chart) chart.destroy();
+  chart=new Chart(document.getElementById('chart'),{
+    type:'line',
+    data:{labels:allDates.map(fmt),datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y} cajas`},backgroundColor:'#1a1a18',padding:10,cornerRadius:8}},
+      scales:{
+        x:{ticks:{autoSkip:true,maxTicksLimit:18,maxRotation:45,font:{size:10,family:'DM Mono'}},grid:{display:false},border:{color:'rgba(0,0,0,0.08)'}},
+        y:{beginAtZero:true,title:{display:true,text:'Cajas',font:{size:11,family:'DM Mono'},color:'#9e9e9a'},ticks:{font:{size:10,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.05)'},border:{dash:[4,4]}}
+      }
+    }
+  });
+
+  const cards=document.getElementById('cards');
+  cards.innerHTML='';
+  datasets.forEach(ds=>{
+    const vals=ds.data.filter(v=>v!=null);
+    if(!vals.length) return;
+    const total=ds.data.reduce((s,v)=>s+(v||0),0);
+    const peak=Math.max(...vals);
+    const peakIdx=ds.data.indexOf(peak);
+    const card=document.createElement('div');
+    card.className='sum-card';
+    card.style.borderLeftColor=ds.borderColor;
+    card.innerHTML=`<div class="sum-name">${ds.label}</div><div class="sum-stat">Total: <strong>${total}</strong> cajas<br>Pico: <strong>${peak}</strong> el ${fmt(allDates[peakIdx])}</div>`;
+    cards.appendChild(card);
+  });
+}
+
+buildMetrics();
+setMode('prod');
+</script>
+</body>
+</html>
