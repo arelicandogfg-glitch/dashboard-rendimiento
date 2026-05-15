@@ -168,34 +168,32 @@ function renderChart() {
     const fechas = [...new Set(DB.filter(r => r.productor === prod).map(r => r.fecha))].sort();
     chartLabels = fechas.map(fmt);
     datasets = its.map((it, i) => {
-      const data = fechas.map(d => { const rows = DB.filter(r => r.fecha === d && r.productor === prod && r.item === it); return rows.length ? rows.reduce((s, r) => s + r.cajas, 0) : null; });
+      const data = DB.filter(r => r.productor === prod && r.item === it).sort((a,b) => a.fecha.localeCompare(b.fecha)).map(r => ({ x: fmt(r.fecha), y: r.cajas }));
       const color = getColor(iC, it, i);
       leg.innerHTML += `<span class="legend-item"><span class="legend-line" style="background:${color}"></span>${it}</span>`;
-      return { label: it, data, borderColor: color, backgroundColor: color+'18', borderWidth: 2, borderDash: dashes[i%5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: true };
+      return { label: it, data, borderColor: color, backgroundColor: color+'18', borderWidth: 2, borderDash: dashes[i%5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, showLine: true };
     });
   } else {
     const item = allItems[sel];
     document.getElementById('subtitle').innerHTML = `Productores para <strong>${item}</strong> — cajas por día`;
     const ps = [...new Set(DB.filter(r => r.item === item).map(r => r.productor))].sort();
-    const fechas = [...new Set(DB.filter(r => r.item === item).map(r => r.fecha))].sort();
-    chartLabels = fechas.map(fmt);
     datasets = ps.map((p, i) => {
-      const data = fechas.map(d => { const rows = DB.filter(r => r.fecha === d && r.productor === p && r.item === item); return rows.length ? rows.reduce((s, r) => s + r.cajas, 0) : null; });
+      const data = DB.filter(r => r.productor === p && r.item === item).sort((a,b) => a.fecha.localeCompare(b.fecha)).map(r => ({ x: fmt(r.fecha), y: r.cajas }));
       const color = getColor(pC, p, i);
       leg.innerHTML += `<span class="legend-item"><span class="legend-line" style="background:${color}"></span>${p.split(' ')[0]}</span>`;
-      return { label: p.split(' ')[0], data, borderColor: color, backgroundColor: color+'18', borderWidth: 2, borderDash: dashes[i%5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: true };
+      return { label: p.split(' ')[0], data, borderColor: color, backgroundColor: color+'18', borderWidth: 2, borderDash: dashes[i%5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, showLine: true };
     });
   }
   if (chart) chart.destroy();
   chart = new Chart(document.getElementById('chart'), {
-    type: 'line',
-    data: { labels: chartLabels, datasets },
+    type: 'scatter',
+    data: { datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
+      interaction: { mode: 'nearest', intersect: false },
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y} cajas` }, backgroundColor: '#1a1a18', padding: 10, cornerRadius: 8 } },
       scales: {
-        x: { ticks: { autoSkip: true, maxTicksLimit: 18, maxRotation: 45, font: { size: 10, family: 'DM Mono' } }, grid: { display: false } },
+        x: { type: 'category', ticks: { autoSkip: true, maxTicksLimit: 18, maxRotation: 45, font: { size: 10, family: 'DM Mono' } }, grid: { display: false } },
         y: { beginAtZero: true, title: { display: true, text: 'Cajas', font: { size: 11, family: 'DM Mono' }, color: '#9e9e9a' }, ticks: { font: { size: 10, family: 'DM Mono' } }, grid: { color: 'rgba(0,0,0,0.05)' } }
       }
     }
