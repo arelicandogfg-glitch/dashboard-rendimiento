@@ -231,7 +231,7 @@ function renderChart() {
       interaction: { mode: 'nearest', intersect: false },
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y} cajas` }, backgroundColor: '#1a1a18', padding: 10, cornerRadius: 8 } },
       scales: {
-        x: { type: 'category', ticks: { autoSkip: true, maxTicksLimit: 18, maxRotation: 45, font: { size: 10, family: 'DM Mono' } }, grid: { display: false } },
+        x: { type: 'category', labels: [...new Set(DB.map(r => fmt(r.fecha)))].sort((a,b) => { const [da,ma]=a.split('/'); const [db,mb]=b.split('/'); return ma-mb||da-db; }), ticks: { autoSkip: true, maxTicksLimit: 18, maxRotation: 45, font: { size: 10, family: 'DM Mono' } }, grid: { display: false } },
         y: { beginAtZero: true, title: { display: true, text: 'Cajas', font: { size: 11, family: 'DM Mono' }, color: '#9e9e9a' }, ticks: { font: { size: 10, family: 'DM Mono' } }, grid: { color: 'rgba(0,0,0,0.05)' } }
       }
     }
