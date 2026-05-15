@@ -13,16 +13,9 @@
     --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.15);
     --text: #1a1a18; --text2: #6b6b68; --text3: #9e9e9a;
     --green: #2d6a4f; --green-light: #d8f3e3;
-    --c1:#2563a8; --c2:#197a58; --c3:#c9441a; --c4:#9a6200; --c5:#a83268;
-    --p1:#6350c4; --p2:#197a58; --p3:#2563a8; --p4:#c9441a; --p5:#a83268;
   }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-  header {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 18px 40px; display: flex; align-items: center;
-    justify-content: space-between; flex-wrap: wrap; gap: 12px;
-  }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .header-left { display: flex; align-items: center; gap: 14px; }
   .logo { width: 34px; height: 34px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
   .logo svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; }
@@ -31,56 +24,43 @@
   .badge { font-size: 11px; font-family: 'DM Mono', monospace; background: var(--green-light); color: var(--green); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(45,106,79,0.2); display:flex; align-items:center; gap:6px; }
   .badge .dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-
   main { padding: 28px 40px; max-width: 1100px; margin: 0 auto; }
-
   .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 28px; }
   .metric { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
   .metric-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
   .metric-value { font-size: 24px; font-weight: 300; color: var(--text); line-height: 1; }
   .metric-value.sm { font-size: 14px; font-weight: 500; margin-top: 2px; }
   .metric-sub { font-size: 10px; color: var(--text3); margin-top: 3px; }
-
   .chart-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 16px; }
   .controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
   .mode-toggle { display: flex; background: var(--surface2); border-radius: 8px; padding: 3px; gap: 2px; }
   .mode-btn { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 5px 13px; border: none; border-radius: 6px; cursor: pointer; background: transparent; color: var(--text2); transition: all 0.15s; }
   .mode-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
   .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
   .tab { font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 12px; border: 1px solid var(--border2); border-radius: 20px; cursor: pointer; background: transparent; color: var(--text2); transition: all 0.15s; }
   .tab:hover { background: var(--surface2); }
   .tab.active { color: #fff; border-color: transparent; }
-
   .chart-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
   .chart-subtitle { font-size: 13px; color: var(--text2); }
   .chart-subtitle strong { color: var(--text); font-weight: 500; }
   .legend { display: flex; flex-wrap: wrap; gap: 10px; }
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); }
   .legend-line { width: 18px; height: 2px; border-radius: 1px; flex-shrink: 0; }
-
   .chart-wrap { position: relative; width: 100%; height: 290px; }
-
   .summary-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 9px; margin-top: 18px; }
   .sum-card { border-radius: 0 8px 8px 0; padding: 11px 13px; background: var(--surface2); border-left: 3px solid #ccc; }
   .sum-name { font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 5px; font-family: 'DM Mono', monospace; }
   .sum-stat { font-size: 12px; color: var(--text2); line-height: 1.7; }
   .sum-stat strong { color: var(--text); font-weight: 500; }
-
   .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; gap: 14px; color: var(--text2); }
   .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .error { background: #fff0f0; border: 1px solid #fcc; border-radius: 10px; padding: 20px; color: #a00; font-size: 13px; margin: 20px 0; }
-
   footer { text-align: center; padding: 20px 40px; font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; border-top: 1px solid var(--border); margin-top: 8px; }
-
-  @media (max-width: 600px) {
-    header, main { padding-left: 16px; padding-right: 16px; }
-  }
+  @media (max-width: 600px) { header, main { padding-left: 16px; padding-right: 16px; } }
 </style>
 </head>
 <body>
-
 <header>
   <div class="header-left">
     <div class="logo">
@@ -93,29 +73,20 @@
   </div>
   <span class="badge"><span class="dot"></span>Datos en tiempo real desde Notion</span>
 </header>
-
 <main>
   <div id="app">
-    <div class="loading">
-      <div class="spinner"></div>
-      <span>Cargando datos desde Notion...</span>
-    </div>
+    <div class="loading"><div class="spinner"></div><span>Cargando datos desde Notion...</span></div>
   </div>
 </main>
-
 <footer>GoodFarms Genetics · Jocotepec, Jalisco · Historial de Rendimiento 2026</footer>
-
 <script>
 const iC = {'GFRB2-180':'#2563a8','GRRB3-184':'#197a58','GFRB4-237':'#c9441a','GFRB5-187':'#9a6200','GFRB6-210':'#a83268'};
 const pC = {'Gustavo Ortíz':'#6350c4','Aureliano Cardenas':'#197a58','Juan Carlos Calleros':'#2563a8','Daniel Rivera':'#c9441a','Alberto Páez':'#a83268'};
 const dashes = {0:[],1:[6,3],2:[3,3],3:[8,3,2,3],4:[4,2]};
 const getColor = (map, name, idx) => map[name] || ['#6350c4','#197a58','#c9441a','#9a6200','#a83268','#2563a8'][idx % 6];
-
 let DB = [], allDates = [], allProds = [], allItems = [];
 let mode = 'prod', sel = 0, chart;
-
 function fmt(d) { const [,m,day] = d.split('-'); return `${parseInt(day)}/${parseInt(m)}`; }
-
 async function loadData() {
   try {
     const res = await fetch('/api/datos');
@@ -130,7 +101,6 @@ async function loadData() {
     document.getElementById('app').innerHTML = `<div class="error">Error al cargar datos: ${err.message}</div>`;
   }
 }
-
 function renderApp() {
   document.getElementById('app').innerHTML = `
     <div class="metrics" id="metrics"></div>
@@ -140,7 +110,7 @@ function renderApp() {
           <button class="mode-btn active" id="btn-prod" onclick="setMode('prod')">Por productor</button>
           <button class="mode-btn" id="btn-item" onclick="setMode('item')">Por item</button>
         </div>
-        <span style="font-size:12px;color:var(--text3);">${allDates.length} día${allDates.length !== 1 ? 's' : ''} registrado${allDates.length !== 1 ? 's' : ''} · ${DB.length} registros</span>
+        <span style="font-size:12px;color:var(--text3);">${allDates.length} días registrados · ${DB.length} registros</span>
       </div>
       <div class="tabs" id="tabs"></div>
       <div class="chart-meta">
@@ -149,12 +119,10 @@ function renderApp() {
       </div>
       <div class="chart-wrap"><canvas id="chart"></canvas></div>
       <div class="summary-cards" id="cards"></div>
-    </div>
-  `;
+    </div>`;
   buildMetrics();
   setMode('prod');
 }
-
 function buildMetrics() {
   const total = DB.reduce((s, r) => s + r.cajas, 0);
   const byItem = {}, byProd = {};
@@ -167,17 +135,14 @@ function buildMetrics() {
     <div class="metric"><div class="metric-label">Productor líder</div><div class="metric-value sm">${bestProd[0].split(' ')[0]}</div><div class="metric-sub">${bestProd[1]} cajas</div></div>
     <div class="metric"><div class="metric-label">Días registrados</div><div class="metric-value">${allDates.length}</div></div>
     <div class="metric"><div class="metric-label">Productores</div><div class="metric-value">${allProds.length}</div></div>
-    <div class="metric"><div class="metric-label">Items</div><div class="metric-value">${allItems.length}</div></div>
-  `;
+    <div class="metric"><div class="metric-label">Items</div><div class="metric-value">${allItems.length}</div></div>`;
 }
-
 function setMode(m) {
   mode = m; sel = 0;
   document.getElementById('btn-prod').classList.toggle('active', m === 'prod');
   document.getElementById('btn-item').classList.toggle('active', m === 'item');
   renderTabs(); renderChart();
 }
-
 function renderTabs() {
   const el = document.getElementById('tabs');
   el.innerHTML = '';
@@ -192,38 +157,39 @@ function renderTabs() {
     el.appendChild(btn);
   });
 }
-
 function renderChart() {
   const leg = document.getElementById('legend');
   leg.innerHTML = '';
-  let datasets = [];
-
+  let datasets = [], chartLabels = [];
   if (mode === 'prod') {
     const prod = allProds[sel];
     document.getElementById('subtitle').innerHTML = `Items de <strong>${prod}</strong> — cajas por día`;
     const its = [...new Set(DB.filter(r => r.productor === prod).map(r => r.item))].sort();
+    const fechas = [...new Set(DB.filter(r => r.productor === prod).map(r => r.fecha))].sort();
+    chartLabels = fechas.map(fmt);
     datasets = its.map((it, i) => {
-      const data = allDates.map(d => { const rows = DB.filter(r => r.fecha === d && r.productor === prod && r.item === it); return rows.length ? rows.reduce((s, r) => s + r.cajas, 0) : null; });
+      const data = fechas.map(d => { const rows = DB.filter(r => r.fecha === d && r.productor === prod && r.item === it); return rows.length ? rows.reduce((s, r) => s + r.cajas, 0) : null; });
       const color = getColor(iC, it, i);
       leg.innerHTML += `<span class="legend-item"><span class="legend-line" style="background:${color}"></span>${it}</span>`;
-      return { label: it, data, borderColor: color, backgroundColor: color + '18', borderWidth: 2, borderDash: dashes[i % 5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: true };
+      return { label: it, data, borderColor: color, backgroundColor: color+'18', borderWidth: 2, borderDash: dashes[i%5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: true };
     });
   } else {
     const item = allItems[sel];
     document.getElementById('subtitle').innerHTML = `Productores para <strong>${item}</strong> — cajas por día`;
     const ps = [...new Set(DB.filter(r => r.item === item).map(r => r.productor))].sort();
+    const fechas = [...new Set(DB.filter(r => r.item === item).map(r => r.fecha))].sort();
+    chartLabels = fechas.map(fmt);
     datasets = ps.map((p, i) => {
-      const data = allDates.map(d => { const rows = DB.filter(r => r.fecha === d && r.productor === p && r.item === item); return rows.length ? rows.reduce((s, r) => s + r.cajas, 0) : null; });
+      const data = fechas.map(d => { const rows = DB.filter(r => r.fecha === d && r.productor === p && r.item === item); return rows.length ? rows.reduce((s, r) => s + r.cajas, 0) : null; });
       const color = getColor(pC, p, i);
       leg.innerHTML += `<span class="legend-item"><span class="legend-line" style="background:${color}"></span>${p.split(' ')[0]}</span>`;
-      return { label: p.split(' ')[0], data, borderColor: color, backgroundColor: color + '18', borderWidth: 2, borderDash: dashes[i % 5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: false };
+      return { label: p.split(' ')[0], data, borderColor: color, backgroundColor: color+'18', borderWidth: 2, borderDash: dashes[i%5], pointRadius: 4, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: true };
     });
   }
-
   if (chart) chart.destroy();
   chart = new Chart(document.getElementById('chart'), {
     type: 'line',
-    data: { labels: allDates.map(fmt), datasets },
+    data: { labels: chartLabels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
@@ -234,7 +200,6 @@ function renderChart() {
       }
     }
   });
-
   const cards = document.getElementById('cards');
   cards.innerHTML = '';
   datasets.forEach(ds => {
@@ -250,7 +215,6 @@ function renderChart() {
     cards.appendChild(card);
   });
 }
-
 loadData();
 </script>
 </body>
